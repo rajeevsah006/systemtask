@@ -1,11 +1,11 @@
 <?php
 session_start();
 $script_name = pathinfo($_SERVER['SCRIPT_NAME'])['filename'];
-if (isset($_SESSION['veda_user_sno']))
+if (isset($_SESSION['session_user_sno']))
 {
 	$redirect = false;
 	echo "<style>.admin-item, .faculty-item, .hr-veda-item, .hr-company-item, .diploma-item, .ms-item { display: none; }</style>";
-	switch ($_SESSION['veda_user_type'])
+	switch ($_SESSION['session_user_role'])
 	{
 		case "Diploma":
 			if (!in_array($script_name, array("dashboard", "result", "holiday"))) $redirect = true;
@@ -39,7 +39,7 @@ if (isset($_SESSION['veda_user_sno']))
 }
 else
 {
-	if ($script_name != "index")
+	if (!in_array($script_name, array("index", "register")))
 	{
 		header('Location: index');
 		exit();

@@ -7,6 +7,9 @@
 .highlight {
   color: red;
 }
+.active {
+  background-color: #7460ee;
+}
 .upper_right {
   position: absolute;
   top: 0;

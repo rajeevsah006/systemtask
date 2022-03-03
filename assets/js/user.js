@@ -1,8 +1,8 @@
 $('document').ready(function () {
 	// valid name pattern
-	var nameregex = /^[a-zA-Z ]+$/;
-	$.validator.addMethod("validfirst_name", function (value, element) {
-		return this.optional(element) || nameregex.test(value);
+	var nregex = /^[a-zA-Z ]+$/;
+	$.validator.addMethod("validuser_name", function (value, element) {
+		return this.optional(element) || nregex.test(value);
 	});
 
 	// valid email id pattern
@@ -12,9 +12,11 @@ $('document').ready(function () {
 	});
 
 	// valid mobile no pattern
-	$.validator.addMethod("intlTelNumber", function (value, element) {
-		return this.optional(element) || $(element).intlTelInput("isValidNumber");
+	var mregex = /^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/;
+	$.validator.addMethod("validmobile_no", function (value, element) {
+		return this.optional(element) || mregex.test(value);
 	});
+
 	$('#login-user').validate({
 		rules: {
 			user_email: {
@@ -80,77 +82,60 @@ $('document').ready(function () {
 			}
 		})
 	}
-	$('#add-faculty').validate({
+
+	$('#register-user').validate({
 		rules: {
-			first_name: {
-				required: true
-			},
-			last_name: {
-				required: true
-			},
-			user_id: {
-				required: true,
-				remote: {
-					url: 'include/check/check_employee.php',
-					type: 'POST',
-					data: {
-						user_id: function () {
-							return $('#add-faculty #user_id').val();
-						}
-					}
-				}
-			},
 			user_name: {
 				required: true,
+				validuser_name: true
+			},
+			user_email: {
+				required: true,
+				validemail_id: true,
 				remote: {
 					url: 'include/check/check_user.php',
 					type: 'POST',
 					data: {
-						user_name: function () {
-							return $('#add-faculty #user_name').val();
+						user_email: function () {
+							return $('#register-user #user_email').val();
 						}
 					}
 				}
 			},
-			domain_sno: {
-				required: true
+			user_mobile: {
+				required: true,
+				validmobile_no: true
 			},
-			user_type: {
-				required: true
+			user_password: {
+				required: true,
+				minlength: 6
 			},
-			mobile_no: {
-				required: true
-			},
-			email_id: {
-				required: true
+			confirm_password: {
+				required: true,
+				equalTo: '#register-user #user_password'
 			}
 		},
 		messages: {
-			first_name: {
-				required: "First name is required"
-			},
-			last_name: {
-				required: "Last name is required"
-			},
-			user_id: {
-				required: "Employee Id is required",
-				remote: "Employee id allready exists , Please Try another one"
-			},
 			user_name: {
-				required: "User name is required",
-				remote: "User name allready exists , Please Try another one"
+				required: "Full name is required",
+				validuser_name: "Name must contain only alphabets and space",
 			},
-			domain_sno: {
-				required: "Domain Id is required"
+			user_email: {
+				required: "Email Id is required",
+				validemail_id: "Please enter valid email address",
+				remote: "Email Id allready exists , Please Try another one"
 			},
-			user_type: {
-				required: "User type is required"
+			user_mobile: {
+				required: "Mobiile number is required",
+				validmobile_no: "Please enter valid mobile number"
 			},
-			mobile_no: {
-				required: "Mobile no is required"
+			user_password: {
+				required: "Password is required",
+				minlength: "Password at least have 6 characters"
 			},
-			email_id: {
-				required: "Email id is required"
+			confirm_password: {
+				required: "Retype your password",
+				equalTo: "Password did not match !"
 			}
 		},
 		errorPlacement: function (error, element) {
@@ -163,39 +148,168 @@ $('document').ready(function () {
 			$(element).closest('.form-group').removeClass('is-invalid').find('.form-control').removeClass('is-invalid');
 			$(element).closest('.form-group').find('.invalid-feedback').html('');
 		},
-		submitHandler: addFaculty
+		submitHandler: registerUser
 	});
 
-	function addFaculty() {
+	function registerUser() {
 		$.ajax({
-			url: 'include/user/add_faculty.php',
+			url: 'include/user/register_user.php',
 			type: 'POST',
-			data: $('#add-faculty').serialize(),
+			data: $('#register-user').serialize(),
 			dataType: 'json',
 			beforeSend: function () {
-				$('#add-faculty #add_button').html('<img src="images/loader/ajax-loader.gif" />&nbsp; Adding...').prop('disabled', true);
+				$('#register-user #register_button').html('<img src="images/loader/ajax-loader.gif" />&nbsp; Signing Up...').prop('disabled', true);
 				$('input[type=text],input[type=email],input[type=password],input[type=date],select').prop('disabled', true);
 			},
 			success: function (data) {
 				setTimeout(function () {
 					if (data.status == 'success') {
-						$('.select2').val(null).trigger('change.select2');
-						$('#add-faculty').trigger('reset');
+						$('#register-user').trigger('reset');
 						toastr.success(data.message);
-						$('#add-faculty #add_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Add Faculty').prop('disabled', false);
+						$('#register-user #register_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Sign Me Up').prop('disabled', false);
 						$('input[type=text],input[type=email],input[type=password],input[type=date],select').prop('disabled', false);
 					} else {
 						toastr.error(data.message);
-						$('#add-faculty #add_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Add Faculty').prop('disabled', false);
+						$('#register-user #register_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Sign Me Up').prop('disabled', false);
 						$('input[type=text],input[type=email],input[type=password],input[type=date],select').prop('disabled', false);
 					}
 				}, 3000);
 			},
 			error: function (xhr, status, error) {
 				toastr.error(xhr.responseText);
-				$('#add-faculty #add_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Add Faculty').prop('disabled', false);
+				$('#register-user #register_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Sign Me Up').prop('disabled', false);
 				$('input[type=text],input[type=email],input[type=password],input[type=date],select').prop('disabled', false);
 			}
 		})
 	}
+
+	$('#change-password').validate({
+		rules: {
+			old_password: {
+				required: true,
+				minlength: 6
+			},
+			new_password: {
+				required: true,
+				minlength: 6
+			},
+			confirm_new_password: {
+				required: true,
+				equalTo: '#change-password #new_password'
+			}
+		},
+		messages: {
+			old_password: {
+				required: "Old password is required",
+				minlength: "Password at least have 6 characters"
+			},
+			new_password: {
+				required: "Password is required",
+				minlength: "Password at least have 6 characters"
+			},
+			confirm_new_password: {
+				required: "Retype your password",
+				equalTo: "Password did not match !"
+			}
+		},
+		errorPlacement: function (error, element) {
+			$(element).closest('.form-group').find('.invalid-feedback').html(error.html());
+		},
+		highlight: function (element) {
+			$(element).closest('.form-group').addClass('is-invalid').find('.form-control').addClass('is-invalid');
+		},
+		unhighlight: function (element, errorClass, validClass) {
+			$(element).closest('.form-group').removeClass('is-invalid').find('.form-control').removeClass('is-invalid');
+			$(element).closest('.form-group').find('.invalid-feedback').html('');
+		},
+		submitHandler: changePassword
+	});
+
+	function changePassword() {
+		$.ajax({
+			url: 'include/user/change_password.php',
+			type: 'POST',
+			data: $('#change-password').serialize(),
+			dataType: 'json',
+			beforeSend: function () {
+				$('#change-password #change_button').html('<img src="images/loader/ajax-loader.gif" />&nbsp; Changing...').prop('disabled', true);
+				$('input[type=text],input[type=email],input[type=password]').prop('disabled', true);
+			},
+			success: function (data) {
+				setTimeout(function () {
+					if (data.status == 'success') {
+						$('#change-password').trigger('reset');
+						toastr.success(data.message);
+						$('#change-password #change_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Change Password').prop('disabled', false);
+						$('input[type=text],input[type=email],input[type=password]').prop('disabled', false);
+					} else {
+						toastr.error(data.message);
+						$('#change-password #change_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Change Password').prop('disabled', false);
+						$('input[type=text],input[type=email],input[type=password]').prop('disabled', false);
+					}
+				}, 3000);
+			},
+			error: function (xhr, status, error) {
+				toastr.error(xhr.responseText);
+				$('#change-password #change_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Change Password').prop('disabled', false);
+				$('input[type=text],input[type=email],input[type=password]').prop('disabled', false);
+			}
+		})
+	}
 });
+
+function changeToVerified(user_sno) {
+	$.ajax({
+		url: "include/user/change_verify.php",
+		type: 'POST',
+		data: {
+			user_sno: user_sno,
+			user_verified: $('#verified_' + user_sno).is(":checked") ? 'YES' : 'NO'
+		},
+		dataType: 'json',
+		success: function (data) {
+			if (data.status == 'success') {
+				toastr.success(data.message);
+			} else {
+				$('#verified_' + user_sno).prop("checked", !$('#verified_' + user_sno).prop("checked"));
+				toastr.error(data.message);
+			}
+		},
+		error: function (xhr, status, error) {
+			$('#verified_' + user_sno).prop("checked", !$('#verified_' + user_sno).prop("checked"));
+			toastr.error(xhr.responseText);
+		}
+	})
+}
+
+function deleteFromUser(user_sno) {
+	swal({
+		title: "Are you sure?",
+		text: "Once deleted, you will not be able to see this user in webpage!",
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+	}).then((willDelete) => {
+		if (willDelete) {
+			$.ajax({
+				url: 'include/user/delete_user.php',
+				type: 'POST',
+				data: {
+					user_sno: user_sno,
+				},
+				dataType: 'json',
+				success: function (data) {
+					if (data.status == 'success') {
+						//table.rows(table.column().checkboxes.selected().map(i => '#user_row_' + i)).remove().draw(false);
+						toastr.success(data.message);
+					} else {
+						toastr.error(data.message);
+					}
+				},
+				error: function (xhr, status, error) {
+					toastr.error(xhr.responseText);
+				}
+			})
+		}
+	});
+}

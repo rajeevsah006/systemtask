@@ -7,13 +7,13 @@ $systemTask = new SystemTask();
 $check_permission = $systemTask->isAdminPermissionAvailable($_SESSION['session_user_sno']);
 if (!empty($check_permission))
 {
-	$systemTask->deleteUser($_POST['user_sno']);
+	$systemTask->updateUserVerified($_POST['user_verified'], $_POST['user_sno']);
 	$response['status'] = 'success';
-	$response['message'] = 'User deleted sucessfully';
+	$response['message'] = 'Details updated sucessfully';
 }
 else
 {
 	$response['status'] = 'error';
-	$response['message'] = 'You don\'t have permission to delete';
+	$response['message'] = 'You don\'t have permission to update';
 }
 echo json_encode($response);

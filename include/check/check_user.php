@@ -1,13 +1,12 @@
 <?php
-require_once "../class/VedaFaculty.php";
-$vedaFaculty = new VedaFaculty();
-$check_faculty = $vedaFaculty->isUserNameAvailable($_POST['user_name']);
-if (!empty($check_faculty))
+require_once "../class/SystemTask.php";
+$systemTask = new SystemTask();
+$check_user = $systemTask->isUserEmailAvailable($_POST['user_email']);
+if (!empty($check_user))
 {
-    echo 'false';
+	echo 'false';
 }
 else
 {
-    echo 'true';
+	echo 'true';
 }
-?>

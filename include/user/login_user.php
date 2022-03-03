@@ -6,26 +6,24 @@ require_once "../class/SystemTask.php";
 $systemTask = new SystemTask();
 if (isset($_POST['login_button']))
 {
-	$user_name = strtolower(strip_tags(trim($_POST['user_name'])));
+	$user_email = strtolower(strip_tags(trim($_POST['user_email'])));
 	$user_password = strip_tags(trim($_POST['user_password']));
-	$user_type = strip_tags(trim($_POST['user_type']));
-	$user_array = $vedaFaculty->validateUserName($user_name);
+	$user_array = $systemTask->validateUserName($user_email);
 	if (!empty($user_array))
 	{
 		if ($user_array[0]["user_password"] == hash('sha256', $user_password))
 		{
-			if ($user_array[0]["user_type"] == $user_type || !in_array($user_array[0]["user_type"], array('Diploma', 'MS')))
+			if ($user_array[0]["user_verified"] == "YES")
 			{
-				$_SESSION['veda_user_sno'] = $user_array[0]["user_sno"];
-				$_SESSION['veda_user_type'] = $user_array[0]["user_type"];
-				$_SESSION['session_user_type'] = $user_type;
+				$_SESSION['session_user_sno'] = $user_array[0]["user_sno"];
+				$_SESSION['session_user_role'] = $user_array[0]["user_role"];
 				$response['status'] = 'success';
 				$response['message'] = 'Login sucessfully...';
 			}
 			else
 			{
 				$response['status'] = 'error';
-				$response['message'] = 'Wrong user type, Try again...';
+				$response['message'] = 'Your account is not verfied yet, Try again...';
 			}
 		}
 		else
