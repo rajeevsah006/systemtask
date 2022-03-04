@@ -183,6 +183,76 @@ $('document').ready(function () {
 		})
 	}
 
+	$('#update-user').validate({
+		rules: {
+			user_name: {
+				required: true,
+				validuser_name: true
+			},
+			user_mobile: {
+				required: true,
+				validmobile_no: true
+			}
+		},
+		messages: {
+			user_name: {
+				required: "Full name is required",
+				validuser_name: "Name must contain only alphabets and space",
+			},
+			user_mobile: {
+				required: "Mobiile number is required",
+				validmobile_no: "Please enter valid mobile number"
+			}
+		},
+		errorPlacement: function (error, element) {
+			$(element).closest('.form-group').find('.invalid-feedback').html(error.html());
+		},
+		highlight: function (element) {
+			$(element).closest('.form-group').addClass('is-invalid').find('.form-control').addClass('is-invalid');
+		},
+		unhighlight: function (element, errorClass, validClass) {
+			$(element).closest('.form-group').removeClass('is-invalid').find('.form-control').removeClass('is-invalid');
+			$(element).closest('.form-group').find('.invalid-feedback').html('');
+		},
+		submitHandler: updateUser
+	});
+
+	function updateUser() {
+		$.ajax({
+			url: 'include/user/update_user.php',
+			type: "POST",
+			data: new FormData($('#update-user')[0]),
+			contentType: false,
+			cache: false,
+			processData: false,
+			dataType: 'json',
+			beforeSend: function () {
+				$('#register-user #register_button').html('<img src="images/loader/ajax-loader.gif" />&nbsp; Signing Up...').prop('disabled', true);
+				$('input[type=text],input[type=email],input[type=password],input[type=date],select').prop('disabled', true);
+			},
+			success: function (data) {
+				setTimeout(function () {
+					if (data.status == 'success') {
+						$('#register-user').trigger('reset');
+						toastr.success(data.message);
+						$('#register-user #register_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Sign Me Up').prop('disabled', false);
+						$('input[type=text],input[type=email],input[type=password],input[type=date],select').prop('disabled', false);
+					} else {
+						toastr.error(data.message);
+						$('#register-user #register_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Sign Me Up').prop('disabled', false);
+						$('input[type=text],input[type=email],input[type=password],input[type=date],select').prop('disabled', false);
+					}
+				}, 3000);
+			},
+			error: function (xhr, status, error) {
+				toastr.error(xhr.responseText);
+				$('#register-user #register_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Sign Me Up').prop('disabled', false);
+				$('input[type=text],input[type=email],input[type=password],input[type=date],select').prop('disabled', false);
+			}
+		})
+	}
+
+
 	$('#change-password').validate({
 		rules: {
 			old_password: {

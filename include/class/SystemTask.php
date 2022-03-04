@@ -135,6 +135,64 @@ class SystemTask extends DBController
 		return $user_sno;
 	}
 
+	function updateUser($user_detail, $file_detail)
+	{
+
+		$query = "UPDATE `user_tb` SET `user_name`=?, `user_mobile`=?, `user_address`=?, `user_gender`=?, `user_dob`=?, `user_image`=?, `user_signature`=?, `user_date`=? WHERE `user_sno`=?";
+
+		$user_sno = strip_tags(trim($user_detail['user_sno']));
+		$user_name = ucwords(strtolower(strip_tags(trim($user_detail['user_name']))));
+		$user_mobile = strip_tags(trim($user_detail['user_mobile']));
+		$user_address = strip_tags(trim($user_detail['user_address']));
+		$user_gender = strip_tags(trim($user_detail['user_gender']));
+		$user_dob = strip_tags(trim($user_detail['user_dob']));
+		//		$user_image = !empty($file_detail['user_image']['tmp_name']) ? addslashes(file_get_contents($file_detail['user_image']['tmp_name'])) : strip_tags(trim($user_detail['uploaded_image']));
+		//echo $user_image;
+		$user_signature = !empty($file_detail['user_signature']['tmp_name']) ? file_get_contents($file_detail['user_signature']['tmp_name']) : strip_tags(trim($user_detail['uploaded_signature']));
+		$user_date = date("d-m-Y");
+
+		$params = array(
+			array(
+				"param_type" => "s",
+				"param_value" => $user_name
+			),
+			array(
+				"param_type" => "s",
+				"param_value" => $user_mobile
+			),
+			array(
+				"param_type" => "s",
+				"param_value" => $user_address
+			),
+			array(
+				"param_type" => "s",
+				"param_value" => $user_gender
+			),
+			array(
+				"param_type" => "s",
+				"param_value" => $user_dob
+			),
+			array(
+				"param_type" => "b",
+				"param_value" => $user_image
+			),
+			array(
+				"param_type" => "b",
+				"param_value" => $user_signature
+			),
+			array(
+				"param_type" => "s",
+				"param_value" => $user_date
+			),
+			array(
+				"param_type" => "i",
+				"param_value" => $user_sno
+			)
+		);
+
+		$this->updateDB($query, $params);
+	}
+
 	function updateUserPassword($user_detail, $user_sno)
 	{
 		$query = "UPDATE `user_tb` SET `user_password`= ? WHERE `user_sno` = ?";

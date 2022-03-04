@@ -9,6 +9,11 @@
 <script type="text/javascript" src="assets/libs/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript" src="assets/libs/pagination/dist/pagination.js"></script>
 
+<!--form js--->
+<script type="text/javascript" src="assets/libs/select2/dist/js/select2.full.min.js"></script>
+<script type="text/javascript" src="assets/libs/select2/dist/js/select2.min.js"></script>
+<script type="text/javascript" src="assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
 <!-- image js -->
 <script type="text/javascript" src="assets/libs/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
 <script type="text/javascript" src="assets/libs/magnific-popup/meg.init.js"></script>
