@@ -183,6 +183,93 @@ $('document').ready(function () {
 		})
 	}
 
+	$('#add-user').validate({
+		rules: {
+			user_name: {
+				required: true,
+				validuser_name: true
+			},
+			user_email: {
+				required: true,
+				validemail_id: true,
+				remote: {
+					url: 'include/check/check_user.php',
+					type: 'POST',
+					data: {
+						user_email: function () {
+							return $('#add-user #user_email').val();
+						}
+					}
+				}
+			},
+			user_mobile: {
+				required: true,
+				validmobile_no: true
+			}
+		},
+		messages: {
+			user_name: {
+				required: "Full name is required",
+				validuser_name: "Name must contain only alphabets and space",
+			},
+			user_email: {
+				required: "Email Id is required",
+				validemail_id: "Please enter valid email address",
+				remote: "Email Id allready exists , Please Try another one"
+			},
+			user_mobile: {
+				required: "Mobiile number is required",
+				validmobile_no: "Please enter valid mobile number"
+			}
+		},
+		errorPlacement: function (error, element) {
+			$(element).closest('.form-group').find('.invalid-feedback').html(error.html());
+		},
+		highlight: function (element) {
+			$(element).closest('.form-group').addClass('is-invalid').find('.form-control').addClass('is-invalid');
+		},
+		unhighlight: function (element, errorClass, validClass) {
+			$(element).closest('.form-group').removeClass('is-invalid').find('.form-control').removeClass('is-invalid');
+			$(element).closest('.form-group').find('.invalid-feedback').html('');
+		},
+		submitHandler: addUser
+	});
+
+	function addUser() {
+		$.ajax({
+			url: 'include/user/add_user.php',
+			type: "POST",
+			data: new FormData($('#add-user')[0]),
+			contentType: false,
+			cache: false,
+			processData: false,
+			dataType: 'json',
+			beforeSend: function () {
+				$('#add-user #add_button').html('<img src="images/loader/ajax-loader.gif" />&nbsp; Adding...').prop('disabled', true);
+				$('input[type=text],input[type=email],input[type=password],input[type=date],input[type=file],select').prop('disabled', true);
+			},
+			success: function (data) {
+				setTimeout(function () {
+					if (data.status == 'success') {
+						$('#add-user').trigger('reset');
+						toastr.success(data.message);
+						$('#add-user #add_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Add User').prop('disabled', false);
+						$('input[type=text],input[type=email],input[type=password],input[type=date],input[type=file],select').prop('disabled', false);
+					} else {
+						toastr.error(data.message);
+						$('#add-user #add_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Add User').prop('disabled', false);
+						$('input[type=text],input[type=email],input[type=password],input[type=date],input[type=file],select').prop('disabled', false);
+					}
+				}, 3000);
+			},
+			error: function (xhr, status, error) {
+				toastr.error(xhr.responseText);
+				$('#add-user #add_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Add User').prop('disabled', false);
+				$('input[type=text],input[type=email],input[type=password],input[type=date],input[type=file],select').prop('disabled', false);
+			}
+		})
+	}
+
 	$('#update-user').validate({
 		rules: {
 			user_name: {
@@ -227,31 +314,29 @@ $('document').ready(function () {
 			processData: false,
 			dataType: 'json',
 			beforeSend: function () {
-				$('#register-user #register_button').html('<img src="images/loader/ajax-loader.gif" />&nbsp; Signing Up...').prop('disabled', true);
-				$('input[type=text],input[type=email],input[type=password],input[type=date],select').prop('disabled', true);
+				$('#update-user #update_button').html('<img src="images/loader/ajax-loader.gif" />&nbsp; Updating...').prop('disabled', true);
+				$('input[type=text],input[type=email],input[type=password],input[type=date],input[type=file],select').prop('disabled', true);
 			},
 			success: function (data) {
 				setTimeout(function () {
 					if (data.status == 'success') {
-						$('#register-user').trigger('reset');
 						toastr.success(data.message);
-						$('#register-user #register_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Sign Me Up').prop('disabled', false);
-						$('input[type=text],input[type=email],input[type=password],input[type=date],select').prop('disabled', false);
+						$('#update-user #update_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Update User').prop('disabled', false);
+						$('input[type=text],input[type=email],input[type=password],input[type=date],input[type=file],select').prop('disabled', false);
 					} else {
 						toastr.error(data.message);
-						$('#register-user #register_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Sign Me Up').prop('disabled', false);
-						$('input[type=text],input[type=email],input[type=password],input[type=date],select').prop('disabled', false);
+						$('#update-user #update_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Update User').prop('disabled', false);
+						$('input[type=text],input[type=email],input[type=password],input[type=date],input[type=file],select').prop('disabled', false);
 					}
 				}, 3000);
 			},
 			error: function (xhr, status, error) {
 				toastr.error(xhr.responseText);
-				$('#register-user #register_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Sign Me Up').prop('disabled', false);
-				$('input[type=text],input[type=email],input[type=password],input[type=date],select').prop('disabled', false);
+				$('#update-user #update_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Update User').prop('disabled', false);
+				$('input[type=text],input[type=email],input[type=password],input[type=date],input[type=file],select').prop('disabled', false);
 			}
 		})
 	}
-
 
 	$('#change-password').validate({
 		rules: {
@@ -370,7 +455,7 @@ function deleteFromUser(user_sno) {
 				dataType: 'json',
 				success: function (data) {
 					if (data.status == 'success') {
-						//table.rows(table.column().checkboxes.selected().map(i => '#user_row_' + i)).remove().draw(false);
+						$('#user_row_' + user_sno).remove();
 						toastr.success(data.message);
 					} else {
 						toastr.error(data.message);

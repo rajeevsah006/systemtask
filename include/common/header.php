@@ -2,13 +2,13 @@
 	<nav class="navbar top-navbar navbar-expand-md navbar-dark">
 		<div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
 			<ul class="navbar-nav float-left mr-auto">
-				<li class="nav-item home_tab">
+				<li class="nav-item home_tab super-admin-item admin-item user-item">
 					<a class="nav-link" href="dashboard">Home</a>
 				</li>
-				<li class="nav-item user_tab">
+				<li class="nav-item user_tab super-admin-item admin-item">
 					<a class="nav-link" href="users">List Users</a>
 				</li>
-				<li class="nav-item profile_tab">
+				<li class="nav-item profile_tab super-admin-item admin-item user-item">
 					<a class="nav-link" href="update_user">Edit Profile</a>
 				</li>
 			</ul>

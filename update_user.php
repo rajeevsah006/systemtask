@@ -70,7 +70,7 @@
 											<div class="form-group">
 												<label for="user_dob">User DOB</label>
 												<div class="input-group">
-													<input name="user_dob" id="user_dob" type="text" class="form-control datepicker" placeholder="DD-MM-YYYY">
+													<input name="user_dob" id="user_dob" type="text" class="form-control datepicker" value="<?php echo $user_array[0]["user_dob"]; ?>" placeholder="DD-MM-YYYY">
 													<div class="input-group-append">
 														<span class="input-group-text"><i class="fa fa-calendar"></i></span>
 													</div>
@@ -101,7 +101,6 @@
 												<label>User Image</label>
 												<div class="custom-file">
 													<input name="user_image" id="user_image" type="file" accept="image/*" class="form-control custom-file-input">
-													<input name="uploaded_image" id="uploaded_image" type="hidden" value="<?php echo base64_encode($user_array[0]["user_image"]); ?>">
 													<label class="custom-file-label" for="user_image">Choose file...</label>
 													<div class="invalid-feedback"></div>
 												</div>
@@ -112,7 +111,6 @@
 												<label>User Signature</label>
 												<div class="custom-file">
 													<input name="user_signature" id="user_signature" type="file" accept="image/*" class="form-control custom-file-input">
-													<input name="uploaded_signature" id="uploaded_signature" type="hidden" value="<?php echo base64_encode($user_array[0]["user_signature"]); ?>">
 													<label class="custom-file-label" for="user_signature">Choose file...</label>
 													<div class="invalid-feedback"></div>
 												</div>

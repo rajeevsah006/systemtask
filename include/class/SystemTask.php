@@ -96,16 +96,20 @@ class SystemTask extends DBController
 		return $userResult;
 	}
 
-	function insertUser($user_detail)
+	function insertUser($user_detail, $file_detail = array())
 	{
-
-		$query = "INSERT INTO `user_tb`(`user_name`, `user_email`, `user_mobile`, `user_password`, `user_date`) VALUES (?, ?, ?, ?, ?)";
+		$query = "INSERT INTO `user_tb`(`user_name`, `user_email`, `user_mobile`, `user_password`, `user_address`, `user_gender`, `user_dob`, `user_image`, `user_signature`, `user_date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		$user_name = ucwords(strtolower(strip_tags(trim($user_detail['user_name']))));
 		$user_email = strtolower(strip_tags(trim($user_detail['user_email'])));
 		$user_mobile = strip_tags(trim($user_detail['user_mobile']));
-		$user_password = strip_tags(trim($user_detail['user_password']));
+		$user_password = isset($user_detail['user_password']) ? strip_tags(trim($user_detail['user_password'])) : 123456;
 		$hashed_password = hash('sha256', $user_password);
+		$user_address = isset($user_detail['user_address']) ? strip_tags(trim($user_detail['user_address'])) : NULL;
+		$user_gender = isset($user_detail['user_address']) ? strip_tags(trim($user_detail['user_gender'])) : NULL;
+		$user_dob = isset($user_detail['user_address']) ? strip_tags(trim($user_detail['user_dob'])) : NULL;
+		$user_image = (isset($file_detail['user_image']) && !empty($file_detail['user_image']['tmp_name'])) ? file_get_contents($file_detail['user_image']['tmp_name']) : NULL;
+		$user_signature = (isset($file_detail['user_signature']) && !empty($file_detail['user_signature']['tmp_name'])) ? file_get_contents($file_detail['user_signature']['tmp_name']) : NULL;
 		$user_date = date("d-m-Y");
 
 		$params = array(
@@ -127,6 +131,26 @@ class SystemTask extends DBController
 			),
 			array(
 				"param_type" => "s",
+				"param_value" => $user_address
+			),
+			array(
+				"param_type" => "s",
+				"param_value" => $user_gender
+			),
+			array(
+				"param_type" => "s",
+				"param_value" => $user_dob
+			),
+			array(
+				"param_type" => "s",
+				"param_value" => $user_image
+			),
+			array(
+				"param_type" => "s",
+				"param_value" => $user_signature
+			),
+			array(
+				"param_type" => "s",
 				"param_value" => $user_date
 			)
 		);
@@ -137,8 +161,7 @@ class SystemTask extends DBController
 
 	function updateUser($user_detail, $file_detail)
 	{
-
-		$query = "UPDATE `user_tb` SET `user_name`=?, `user_mobile`=?, `user_address`=?, `user_gender`=?, `user_dob`=?, `user_image`=?, `user_signature`=?, `user_date`=? WHERE `user_sno`=?";
+		$query = "UPDATE `user_tb` SET `user_name`=?, `user_mobile`=?, `user_address`=?, `user_gender`=?, `user_dob`=?,`user_image`=IFNULL(?, `user_image`),`user_signature`=IFNULL(?, `user_signature`), `user_date`=? WHERE `user_sno`=?";
 
 		$user_sno = strip_tags(trim($user_detail['user_sno']));
 		$user_name = ucwords(strtolower(strip_tags(trim($user_detail['user_name']))));
@@ -146,9 +169,8 @@ class SystemTask extends DBController
 		$user_address = strip_tags(trim($user_detail['user_address']));
 		$user_gender = strip_tags(trim($user_detail['user_gender']));
 		$user_dob = strip_tags(trim($user_detail['user_dob']));
-		//		$user_image = !empty($file_detail['user_image']['tmp_name']) ? addslashes(file_get_contents($file_detail['user_image']['tmp_name'])) : strip_tags(trim($user_detail['uploaded_image']));
-		//echo $user_image;
-		$user_signature = !empty($file_detail['user_signature']['tmp_name']) ? file_get_contents($file_detail['user_signature']['tmp_name']) : strip_tags(trim($user_detail['uploaded_signature']));
+		$user_image = !empty($file_detail['user_image']['tmp_name']) ? file_get_contents($file_detail['user_image']['tmp_name']) : NULL;
+		$user_signature = !empty($file_detail['user_signature']['tmp_name']) ? file_get_contents($file_detail['user_signature']['tmp_name']) : NULL;
 		$user_date = date("d-m-Y");
 
 		$params = array(
@@ -173,11 +195,11 @@ class SystemTask extends DBController
 				"param_value" => $user_dob
 			),
 			array(
-				"param_type" => "b",
+				"param_type" => "s",
 				"param_value" => $user_image
 			),
 			array(
-				"param_type" => "b",
+				"param_type" => "s",
 				"param_value" => $user_signature
 			),
 			array(
