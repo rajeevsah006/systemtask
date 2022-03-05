@@ -126,7 +126,7 @@
 											<div class="col-md-3">
 												<div class="card" style="margin-bottom: 0px;padding-bottom: 0px;margin-top: 20px;">
 													<div class="el-card-item" style="margin-bottom: 0px;padding-bottom: 0px;">
-														<div class="el-card-avatar el-overlay-1"><img id="preview_image" src="data:image/jpeg;base64,<?php echo base64_encode($user_array[0]["user_image"]); ?>" onerror="this.onerror=null; this.src=''" />
+														<div class="el-card-avatar el-overlay-1"><img id="preview_image" onerror="this.onerror=null; this.src=''" />
 														</div>
 													</div>
 												</div>
@@ -138,7 +138,7 @@
 											<div class="col-md-3">
 												<div class="card" style="margin-bottom: 0px;padding-bottom: 0px;margin-top: 20px;">
 													<div class="el-card-item" style="margin-bottom: 0px;padding-bottom: 0px;">
-														<div class="el-card-avatar el-overlay-1"><img id="preview_signature" src="data:image/jpeg;base64,<?php echo base64_encode($user_array[0]["user_signature"]); ?>" onerror="this.onerror=null; this.src=''" />
+														<div class="el-card-avatar el-overlay-1"><img id="preview_signature" onerror="this.onerror=null; this.src=''" />
 														</div>
 													</div>
 												</div>

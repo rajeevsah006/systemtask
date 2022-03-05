@@ -121,7 +121,7 @@
 												if (!empty($user_array))
 												{
 												?>
-													<a class="image-popup-no-margins" href="data:image/jpeg;base64,<?php echo base64_encode($user_array[0]["user_image"]); ?>"><img class="avatar" src="data:image/jpeg;base64,<?php echo base64_encode($user_array[0]["user_image"]); ?>" onerror="this.onerror=null; this.parentNode.href=this.src='images/logo/user.png'" /></a>
+													<a class="image-popup-no-margins" href="<?php echo $user_array[0]["user_image"]; ?>"><img class="avatar" src="<?php echo $user_array[0]["user_image"]; ?>" onerror="this.onerror=null; this.parentNode.href=this.src='images/logo/user.png'" /></a>
 													<h4 class="title"><?php echo $user_array[0]["user_name"]; ?><br /><a href="javascript:void(0)"><small>@<?php echo $user_array[0]["user_role"]; ?></small></a></h4>
 												<?php } ?>
 											</div>

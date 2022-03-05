@@ -108,8 +108,31 @@ class SystemTask extends DBController
 		$user_address = isset($user_detail['user_address']) ? strip_tags(trim($user_detail['user_address'])) : NULL;
 		$user_gender = isset($user_detail['user_address']) ? strip_tags(trim($user_detail['user_gender'])) : NULL;
 		$user_dob = isset($user_detail['user_address']) ? strip_tags(trim($user_detail['user_dob'])) : NULL;
-		$user_image = (isset($file_detail['user_image']) && !empty($file_detail['user_image']['tmp_name'])) ? file_get_contents($file_detail['user_image']['tmp_name']) : NULL;
-		$user_signature = (isset($file_detail['user_signature']) && !empty($file_detail['user_signature']['tmp_name'])) ? file_get_contents($file_detail['user_signature']['tmp_name']) : NULL;
+		if (isset($file_detail['user_image']) && !empty($file_detail['user_image']['name']))
+		{
+			$file_ext = pathinfo($file_detail['user_image']['name'], PATHINFO_EXTENSION);
+			$user_image = time() . '.' . $file_ext;
+			$tmp_name = $file_detail['user_image']['tmp_name'];
+			move_uploaded_file($tmp_name, '../../images/profile/' . $user_image);
+			$user_image = 'http://localhost/systemtask/task1/images/profile/' . $user_image;
+		}
+		else
+		{
+			$user_image = NULL;
+		}
+		if (isset($file_detail['user_signature']) && !empty($file_detail['user_signature']['name']))
+		{
+			$file_ext = pathinfo($file_detail['user_signature']['name'], PATHINFO_EXTENSION);
+			$user_signature = time() . '.' . $file_ext;
+			$tmp_name = $file_detail['user_signature']['tmp_name'];
+			move_uploaded_file($tmp_name, '../../images/signature/' . $user_signature);
+			$user_signature = 'http://localhost/systemtask/task1/images/signature/' . $user_signature;
+		}
+		else
+		{
+			$user_signature = NULL;
+		}
+
 		$user_date = date("d-m-Y");
 
 		$params = array(
@@ -169,8 +192,40 @@ class SystemTask extends DBController
 		$user_address = strip_tags(trim($user_detail['user_address']));
 		$user_gender = strip_tags(trim($user_detail['user_gender']));
 		$user_dob = strip_tags(trim($user_detail['user_dob']));
-		$user_image = !empty($file_detail['user_image']['tmp_name']) ? file_get_contents($file_detail['user_image']['tmp_name']) : NULL;
-		$user_signature = !empty($file_detail['user_signature']['tmp_name']) ? file_get_contents($file_detail['user_signature']['tmp_name']) : NULL;
+		if (isset($file_detail['user_image']) && !empty($file_detail['user_image']['name']))
+		{
+			$user_array = $this->getUserByUserSno($user_sno);
+			if (!empty($user_array[0]['user_image']) && file_exists('../../images/profile/' . basename($user_array[0]["user_image"])))
+			{
+				unlink('../../images/profile/' . basename($user_array[0]["user_image"]));
+			}
+			$file_ext = pathinfo($file_detail['user_image']['name'], PATHINFO_EXTENSION);
+			$user_image = time() . '.' . $file_ext;
+			$tmp_name = $file_detail['user_image']['tmp_name'];
+			move_uploaded_file($tmp_name, '../../images/profile/' . $user_image);
+			$user_image = 'http://localhost/systemtask/task1/images/profile/' . $user_image;
+		}
+		else
+		{
+			$user_image = NULL;
+		}
+		if (isset($file_detail['user_signature']) && !empty($file_detail['user_signature']['name']))
+		{
+			$user_array = $this->getUserByUserSno($user_sno);
+			if (!empty($user_array[0]['user_signature']) && file_exists('../../images/signature/' . basename($user_array[0]["user_signature"])))
+			{
+				unlink('../../images/signature/' . basename($user_array[0]["user_signature"]));
+			}
+			$file_ext = pathinfo($file_detail['user_signature']['name'], PATHINFO_EXTENSION);
+			$user_signature = time() . '.' . $file_ext;
+			$tmp_name = $file_detail['user_signature']['tmp_name'];
+			move_uploaded_file($tmp_name, '../../images/signature/' . $user_signature);
+			$user_signature = 'http://localhost/systemtask/task1/images/signature/' . $user_signature;
+		}
+		else
+		{
+			$user_signature = NULL;
+		}
 		$user_date = date("d-m-Y");
 
 		$params = array(
@@ -263,6 +318,17 @@ class SystemTask extends DBController
 		$query = "DELETE FROM `user_tb` WHERE `user_sno` = ?";
 
 		$user_sno = strip_tags(trim($user_sno));
+		$user_array = $this->getUserByUserSno($user_sno);
+
+		if (!empty($user_array[0]['user_image']) && file_exists('../../images/profile/' . basename($user_array[0]["user_image"])))
+		{
+			unlink('../../images/profile/' . basename($user_array[0]["user_image"]));
+		}
+
+		if (!empty($user_array[0]['user_signature']) && file_exists('../../images/signature/' . basename($user_array[0]["user_signature"])))
+		{
+			unlink('../../images/signature/' . basename($user_array[0]["user_signature"]));
+		}
 
 		$params = array(
 			array(

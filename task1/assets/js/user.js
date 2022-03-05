@@ -252,6 +252,8 @@ $('document').ready(function () {
 				setTimeout(function () {
 					if (data.status == 'success') {
 						$('#add-user').trigger('reset');
+						$('#preview_image').attr('src', '');
+						$('#preview_signature').attr('src', '');
 						toastr.success(data.message);
 						$('#add-user #add_button').html('<i class="fas fa-sign-in-alt" aria-hidden="true"></i>&nbsp; Add User').prop('disabled', false);
 						$('input[type=text],input[type=email],input[type=password],input[type=date],input[type=file],select').prop('disabled', false);

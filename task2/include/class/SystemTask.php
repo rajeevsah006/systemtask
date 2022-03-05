@@ -39,9 +39,9 @@ class SystemTask extends DBController
 		return $employeeResult;
 	}
 
-	function getAllEmployee($page_number, $limit)
+	function getAllEmployee($page_number, $limit, $keyword)
 	{
-		$query = "SELECT * FROM employee_tb et JOIN (SELECT COUNT(employee_sno) as employee_count FROM employee_tb WHERE employee_role = 'User') ec WHERE et.employee_role = 'User' ORDER BY et.employee_sno ASC LIMIT $page_number, $limit";
+		$query = "SELECT * FROM employee_tb et JOIN (SELECT COUNT(employee_sno) as employee_count FROM employee_tb WHERE employee_role = 'User' AND (employee_name LIKE '%$keyword%' OR employee_email LIKE '%$keyword%')) ec WHERE et.employee_role = 'User' AND (et.employee_name LIKE '%$keyword%' OR et.employee_email LIKE '%$keyword%') ORDER BY et.employee_sno ASC LIMIT $page_number, $limit";
 
 		$employeeResult = $this->getDBResult($query);
 		return $employeeResult;
@@ -89,7 +89,23 @@ class SystemTask extends DBController
 		$employee_dob = strip_tags(trim($employee_detail['employee_dob']));
 		$employee_bg = strip_tags(trim($employee_detail['employee_bg']));
 		$employee_address = strip_tags(trim($employee_detail['employee_address']));
-		$employee_identify = !empty($file_detail['employee_identify']['tmp_name']) ? file_get_contents($file_detail['employee_identify']['tmp_name']) : NULL;
+		if (isset($file_detail['employee_identify']) && !empty($file_detail['employee_identify']['name']))
+		{
+			$employee_array = $this->getEmployeeByEmployeeSno($employee_sno);
+			if (!empty($employee_array[0]['employee_identify']) && file_exists('../../images/identify/' . basename($employee_array[0]["employee_identify"])))
+			{
+				unlink('../../images/identify/' . basename($employee_array[0]["employee_identify"]));
+			}
+			$file_ext = pathinfo($file_detail['employee_identify']['name'], PATHINFO_EXTENSION);
+			$employee_identify = time() . '.' . $file_ext;
+			$tmp_name = $file_detail['employee_identify']['tmp_name'];
+			move_uploaded_file($tmp_name, '../../images/identify/' . $employee_identify);
+			$employee_identify = 'http://localhost/systemtask/task2/images/identify/' . $employee_identify;
+		}
+		else
+		{
+			$employee_identify = NULL;
+		}
 		$employee_date = date("d-m-Y");
 
 		$params = array(

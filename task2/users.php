@@ -37,6 +37,24 @@
 		<!------------------------------- header end ------------------------------------------>
 
 		<!------------------------------- user start ------------------------------------------>
+		<?php
+		if (isset($_REQUEST["keyword"]))
+		{
+			$keyword  = $_REQUEST["keyword"];
+		}
+		else
+		{
+			$keyword = "";
+		};
+		if (isset($_REQUEST["page_number"]))
+		{
+			$page_number  = $_REQUEST["page_number"];
+		}
+		else
+		{
+			$page_number = 1;
+		};
+		?>
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-12">
@@ -45,8 +63,21 @@
 							<div class="table-wrapper">
 								<div class="table-title mb-2">
 									<div class="row">
-										<div class="col-sm-12">
+										<div class="col-sm-6">
 											<h2>Manage <b>Employee</b></h2>
+										</div>
+										<div class="col-sm-6">
+											<form method="GET" action="">
+												<input type="hidden" name="page_number" id="page_number" value="<?php echo $page_number; ?>" />
+												<div class="input-group col-md-4 float-right">
+													<input type="text" class="form-control" placeholder="Search here..." name="keyword" value="<?php echo $keyword; ?>" />
+													<span class="input-group-btn">
+														<button class="btn btn-primary" id="user_search" name="user_search" style="height: 100%;">
+															<i class="fa fa-search" aria-hidden="true"></i>
+														</button>
+													</span>
+												</div>
+											</form>
 										</div>
 									</div>
 								</div>
@@ -65,10 +96,9 @@
 									<tbody>
 										<?php
 										$employee_limit = 3;
-										$page_number = isset($_GET['page_number']) ? $_GET['page_number'] : 1;
 										$start_from = ($page_number - 1) * $employee_limit;
 										$count = $start_from;
-										$employee_array = $systemTask->getAllEmployee($start_from, $employee_limit);
+										$employee_array = $systemTask->getAllEmployee($start_from, $employee_limit, $keyword);
 										if (!empty($employee_array))
 										{
 											foreach ($employee_array as $key => $value)
@@ -82,7 +112,7 @@
 													<td><?php echo $employee_array[$key]["employee_designation"]; ?></td>
 													<td><?php echo $employee_array[$key]["employee_doj"]; ?></td>
 													<td>
-														<a class="image-popup-no-margins" href="data:image/jpeg;base64,<?php echo base64_encode($employee_array[$key]["employee_identify"]); ?>"><img src="data:image/jpeg;base64,<?php echo base64_encode($employee_array[$key]["employee_identify"]); ?>" onerror="this.onerror=null; this.parentNode.href=this.src='images/logo/user.png'" width=" 35" height="35" style="margin: -12px 0px -12px 0px;"></a>
+														<a class="image-popup-no-margins" href="<?php echo $employee_array[$key]["employee_identify"]; ?>"><img src="<?php echo $employee_array[$key]["employee_identify"]; ?>" onerror="this.onerror=null; this.parentNode.href=this.src='images/logo/user.png'" width=" 35" height="35" style="margin: -12px 0px -12px 0px;"></a>
 													</td>
 												</tr>
 										<?php }
@@ -90,9 +120,12 @@
 									</tbody>
 								</table>
 								<?php
-								for ($page_number = 1; $page_number <= ceil($employee_array[0]["employee_count"] / $employee_limit); $page_number++)
+								if (!empty($employee_array))
 								{
-									echo '<a href = "users.php?page_number=' . $page_number . '">' . $page_number . ' </a>';
+									for ($page_number = 1; $page_number <= ceil($employee_array[0]["employee_count"] / $employee_limit); $page_number++)
+									{
+										echo '<a href = "users.php?' . 'keyword=' . $keyword . '&page_number=' . $page_number . '">' . $page_number . ' </a>';
+									}
 								}
 								?>
 							</div>
@@ -129,6 +162,27 @@
 				enabled: true,
 				duration: 300
 			}
+		});
+		/*
+				function load_data() {
+					$.ajax({
+						url: "include/user/get_user.php",
+						method: "GET",
+						data: {
+							keyword: $("#keyword").val(),
+							page_number: $("#page_number").val()
+						},
+						beforeSend: function() {
+							$('#result').html('<div style="text-align:center;"><img src="images/loader/bolt.gif" style="max-width:100%;"/></div>');
+						},
+						success: function(data) {
+							$('#result').html(data);
+						}
+					});
+				}
+		*/
+		$("#user_search").click(function() {
+			$("#page_number").val(1);
 		});
 	</script>
 
