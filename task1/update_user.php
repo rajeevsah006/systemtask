@@ -211,6 +211,37 @@
 				$('#preview_signature').attr('src', '');
 			}
 		});
+
+		/*
+				$(document).ready(function() {
+					$.ajax({
+						url: "include/user/get_user.php",
+						type: 'GET',
+						data: {
+							user_sno: $("#user_sno").val(),
+						},
+						dataType: 'json',
+						cache: false,
+						success: function(data) {
+							console.log(data)
+							if (data.status == 'success') {
+								$("#user_name").val(data.details.user_name);
+								$("#user_mobile").val(data.details.user_mobile);
+								$("#user_dob").val(data.details.user_dob);
+								$("#user_gender").val(data.details.user_gender);
+								$("#user_address").val(data.details.user_address);
+								$('#preview_image').attr('src', data.details.user_image);
+								$('#preview_signature').attr('src', data.details.user_signature);
+							} else {
+								toastr.error(data.message);
+							}
+						},
+						error: function(xhr, status, error) {
+							toastr.error(xhr.responseText);
+						}
+					})
+				});
+				*/
 	</script>
 
 </body>
