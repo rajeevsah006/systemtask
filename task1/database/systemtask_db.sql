@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 05, 2022 at 09:32 PM
--- Server version: 10.4.19-MariaDB
--- PHP Version: 8.0.7
+-- Generation Time: Mar 10, 2022 at 01:11 PM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 7.4.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -88,7 +88,7 @@ CREATE TABLE `user_tb` (
 --
 
 INSERT INTO `user_tb` (`user_sno`, `user_name`, `user_role`, `user_email`, `user_mobile`, `user_password`, `user_address`, `user_gender`, `user_dob`, `user_image`, `user_signature`, `user_verified`, `user_date`) VALUES
-(1, 'Rajeev Sah', 'Super Admin', 'rajeev.sah006@gmail.com', '9038696207', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', 'Emergency road for Troma centre, C Block, E Block, Ellenabad', 'Male', '26-12-1996', 'http://localhost/systemtask/task1/images/profile/1646505105.jpg', 'http://localhost/systemtask/task1/images/signature/1646512088.png', 'YES', '05-03-2022'),
+(1, 'Rajeev Sah', 'Super Admin', 'rajeev.sah006@gmail.com', '9038696207', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', 'Emergency road for Troma centre, C Block, E Block, Ellenabad', 'Male', '26-12-1996', 'http://localhost/systemtask/task1/images/profile/1646505105.jpg', 'http://localhost/systemtask/task1/images/signature/1646512088.png', 'YES', '10-03-2022'),
 (2, 'Manish Kumar Thakur', 'Admin', 'manish.kumar@gmail.com', '6789123456', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'Emergency road for Troma centre, C Block, E Block, Ellenabad\n', 'Male', '26-10-1996', NULL, NULL, 'YES', '03-03-2022'),
 (17, 'Test User', 'User', 'test1@test.com', '9038696207', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'Emergency road for Troma centre, C Block, E Block, Ellenabad', 'Male', '06-03-2022', 'http://localhost/systemtask/task1/images/profile/1646512070.jfif', 'http://localhost/systemtask/task1/images/signature/1646512070.png', 'YES', '05-03-2022'),
 (18, 'Test User', 'User', 'test2@test.com', '9038696207', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', NULL, NULL, NULL, NULL, NULL, 'NO', '05-03-2022');
@@ -123,7 +123,7 @@ ALTER TABLE `employee_tb`
 -- AUTO_INCREMENT for table `user_tb`
 --
 ALTER TABLE `user_tb`
-  MODIFY `user_sno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `user_sno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

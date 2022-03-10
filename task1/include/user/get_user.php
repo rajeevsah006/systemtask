@@ -4,7 +4,7 @@ $response = array();
 session_start();
 require_once "../class/SystemTask.php";
 $systemTask = new SystemTask();
-$user_array = $systemTask->getAllUser();
+$user_array = isset($_GET['user_sno']) ? $systemTask->getUserByUserSno($_GET['user_sno']) : $systemTask->getAllUser();
 if (!empty($user_array))
 {
 	$response['status'] = 'success';

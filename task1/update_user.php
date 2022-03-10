@@ -42,131 +42,121 @@
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-body">
-							<?php
-							$user_sno = isset($_REQUEST["user_sno"]) ? base64_decode($_REQUEST["user_sno"]) : $_SESSION['session_user_sno'];
-							$user_array = $systemTask->getUserByUserSno($user_sno);
-							if (!empty($user_array))
-							{
-							?>
-								<form class="form-horizontal" id="update-user" method="post" role="form" autocomplete="off" enctype="multipart/form-data">
-									<div class="row">
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="user_name">Full Name</label>
-												<input name="user_name" id="user_name" type="text" class="form-control" value="<?php echo $user_array[0]["user_name"]; ?>" placeholder="Full Name">
-												<div class="invalid-feedback"></div>
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="user_mobile">Mobile No</label>
-												<input name="user_mobile" id="user_mobile" type="text" class="form-control" value="<?php echo $user_array[0]["user_mobile"]; ?>" placeholder="Mobile No">
-												<div class="invalid-feedback"></div>
-											</div>
+							<form class="form-horizontal" id="update-user" method="post" role="form" autocomplete="off" enctype="multipart/form-data">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="user_name">Full Name</label>
+											<input name="user_name" id="user_name" type="text" class="form-control" placeholder="Full Name">
+											<div class="invalid-feedback"></div>
 										</div>
 									</div>
-									<div class="row">
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="user_dob">User DOB</label>
-												<div class="input-group">
-													<input name="user_dob" id="user_dob" type="text" class="form-control datepicker" value="<?php echo $user_array[0]["user_dob"]; ?>" placeholder="DD-MM-YYYY">
-													<div class="input-group-append">
-														<span class="input-group-text"><i class="fa fa-calendar"></i></span>
-													</div>
-													<div class="invalid-feedback"></div>
-												</div>
-											</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="user_mobile">Mobile No</label>
+											<input name="user_mobile" id="user_mobile" type="text" class="form-control" placeholder="Mobile No">
+											<div class="invalid-feedback"></div>
 										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label for="user_gender">User Gender</label>
-												<input name="user_gender" id="user_gender" type="text" class="form-control" value="<?php echo $user_array[0]["user_gender"]; ?>" placeholder="User Gender">
-												<div class="invalid-feedback"></div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group">
-												<label for="user_address">User Address</label>
-												<input name="user_address" id="user_address" type="text" class="form-control" value="<?php echo $user_array[0]["user_address"]; ?>" placeholder="User Address">
-												<div class="invalid-feedback"></div>
-											</div>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-6">
-											<div class="form-group">
-												<label>User Image</label>
-												<div class="custom-file">
-													<input name="user_image" id="user_image" type="file" accept="image/*" class="form-control custom-file-input">
-													<label class="custom-file-label" for="user_image">Choose file...</label>
-													<div class="invalid-feedback"></div>
-												</div>
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label>User Signature</label>
-												<div class="custom-file">
-													<input name="user_signature" id="user_signature" type="file" accept="image/*" class="form-control custom-file-input">
-													<label class="custom-file-label" for="user_signature">Choose file...</label>
-													<div class="invalid-feedback"></div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row el-element-overlay">
-										<div class="col-md-6">
-											<div class="row">
-												<div class="col-md-3">
-													<div class="card" style="margin-bottom: 0px;padding-bottom: 0px;margin-top: 20px;">
-														<div class="el-card-item" style="margin-bottom: 0px;padding-bottom: 0px;">
-															<div class="el-card-avatar el-overlay-1"><img id="preview_image" src="<?php echo $user_array[0]["user_image"]; ?>" onerror="this.onerror=null; this.src=''" />
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="row">
-												<div class="col-md-3">
-													<div class="card" style="margin-bottom: 0px;padding-bottom: 0px;margin-top: 20px;">
-														<div class="el-card-item" style="margin-bottom: 0px;padding-bottom: 0px;">
-															<div class="el-card-avatar el-overlay-1"><img id="preview_signature" src="<?php echo $user_array[0]["user_signature"]; ?>" onerror="this.onerror=null; this.src=''" />
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<input name="user_sno" id="user_sno" type="hidden" value="<?php echo $user_sno; ?>">
-									<div class="border-top">
-										<div class="card-body">
-											<div class="form-group">
-												<button name="update_button" id="update_button" type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>&nbsp; Update User</button>
-											</div>
-										</div>
-									</div>
-								</form>
-							<?php }
-							else
-							{ ?>
-								<div class="col-md-12">
-									<div class="card"><br /><br />
-										<div class="empty-result" id="empty_result" style="text-align:center;">
-											<img src="images/logo/empty_area.png" style="max-width:100%;" />
-											<h2 style="font-weight: 900;">Sad No User!</h2>
-											<br />
-											<p style="font-family: Montserrat;color: gray;">We cannot find the user you are searching for, something wrong !!</p>
-											<br />
-										</div><br /><br />
 									</div>
 								</div>
-							<?php } ?>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="user_dob">User DOB</label>
+											<div class="input-group">
+												<input name="user_dob" id="user_dob" type="text" class="form-control datepicker" placeholder="DD-MM-YYYY">
+												<div class="input-group-append">
+													<span class="input-group-text"><i class="fa fa-calendar"></i></span>
+												</div>
+												<div class="invalid-feedback"></div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="user_gender">User Gender</label>
+											<input name="user_gender" id="user_gender" type="text" class="form-control" placeholder="User Gender">
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="user_address">User Address</label>
+											<input name="user_address" id="user_address" type="text" class="form-control" placeholder="User Address">
+											<div class="invalid-feedback"></div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>User Image</label>
+											<div class="custom-file">
+												<input name="user_image" id="user_image" type="file" accept="image/*" class="form-control custom-file-input">
+												<label class="custom-file-label" for="user_image">Choose file...</label>
+												<div class="invalid-feedback"></div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>User Signature</label>
+											<div class="custom-file">
+												<input name="user_signature" id="user_signature" type="file" accept="image/*" class="form-control custom-file-input">
+												<label class="custom-file-label" for="user_signature">Choose file...</label>
+												<div class="invalid-feedback"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row el-element-overlay">
+									<div class="col-md-6">
+										<div class="row">
+											<div class="col-md-3">
+												<div class="card" style="margin-bottom: 0px;padding-bottom: 0px;margin-top: 20px;">
+													<div class="el-card-item" style="margin-bottom: 0px;padding-bottom: 0px;">
+														<div class="el-card-avatar el-overlay-1"><img id="preview_image" onerror="this.onerror=null; this.src=''" />
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="row">
+											<div class="col-md-3">
+												<div class="card" style="margin-bottom: 0px;padding-bottom: 0px;margin-top: 20px;">
+													<div class="el-card-item" style="margin-bottom: 0px;padding-bottom: 0px;">
+														<div class="el-card-avatar el-overlay-1"><img id="preview_signature" onerror="this.onerror=null; this.src=''" />
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<input name="user_sno" id="user_sno" type="hidden" value="<?php echo isset($_REQUEST["user_sno"]) ? base64_decode($_REQUEST["user_sno"]) : $_SESSION['session_user_sno']; ?>">
+								<div class="border-top">
+									<div class="card-body">
+										<div class="form-group">
+											<button name="update_button" id="update_button" type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>&nbsp; Update User</button>
+										</div>
+									</div>
+								</div>
+							</form>
+							<div class="col-md-12" id="error-msg" style="display:none;">
+								<div class="card"><br /><br />
+									<div class="empty-result" id="empty_result" style="text-align:center;">
+										<img src="images/logo/empty_area.png" style="max-width:100%;" />
+										<h2 style="font-weight: 900;">Sad No User!</h2>
+										<br />
+										<p style="font-family: Montserrat;color: gray;">We cannot find the user you are searching for, something wrong !!</p>
+										<br />
+									</div><br /><br />
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -212,36 +202,37 @@
 			}
 		});
 
-		/*
-				$(document).ready(function() {
-					$.ajax({
-						url: "include/user/get_user.php",
-						type: 'GET',
-						data: {
-							user_sno: $("#user_sno").val(),
-						},
-						dataType: 'json',
-						cache: false,
-						success: function(data) {
-							console.log(data)
-							if (data.status == 'success') {
-								$("#user_name").val(data.details.user_name);
-								$("#user_mobile").val(data.details.user_mobile);
-								$("#user_dob").val(data.details.user_dob);
-								$("#user_gender").val(data.details.user_gender);
-								$("#user_address").val(data.details.user_address);
-								$('#preview_image').attr('src', data.details.user_image);
-								$('#preview_signature').attr('src', data.details.user_signature);
-							} else {
-								toastr.error(data.message);
-							}
-						},
-						error: function(xhr, status, error) {
-							toastr.error(xhr.responseText);
-						}
-					})
-				});
-				*/
+		$(document).ready(function() {
+			$.ajax({
+				url: "include/user/get_user.php",
+				type: 'GET',
+				data: {
+					user_sno: $("#user_sno").val(),
+				},
+				dataType: 'json',
+				cache: false,
+				success: function(data) {
+					if (data.status == 'success') {
+						$("#user_name").val(data.details[0].user_name);
+						$("#user_mobile").val(data.details[0].user_mobile);
+						$("#user_dob").val(data.details[0].user_dob);
+						$("#user_gender").val(data.details[0].user_gender);
+						$("#user_address").val(data.details[0].user_address);
+						$('#preview_image').attr('src', data.details[0].user_image);
+						$('#preview_signature').attr('src', data.details[0].user_signature);
+					} else {
+						toastr.error(data.message);
+						$("#update-user").hide();
+						$("#error-msg").show();
+					}
+				},
+				error: function(xhr, status, error) {
+					toastr.error(xhr.responseText);
+					$("#update-user").hide();
+					$("#error-msg").show();
+				}
+			})
+		});
 	</script>
 
 </body>
